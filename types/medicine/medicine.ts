@@ -1,7 +1,7 @@
 export interface Dosage {
-  DailyDoses: number;
+  dailyDoses: number;
   doseUnit: string;
-  DoseQuantity: number;
+  doseQuantity: number;
 }
 
 export interface MedicineEntity {
