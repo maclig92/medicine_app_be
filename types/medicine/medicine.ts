@@ -13,3 +13,15 @@ export interface MedicineEntity {
   endDate?: Date;
   note?: string;
 }
+
+export interface MedicineDbRecord {
+  id: string;
+  name: string;
+  form: string;
+  numberOfDailyDoses: number;
+  doseUnit: string;
+  doseQuantity: number;
+  startDate?: Date;
+  endDate?: Date;
+  note?: string;
+}

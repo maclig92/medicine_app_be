@@ -1,34 +1,67 @@
-import { Dosage, MedicineEntity } from '../types';
+import { Dosage, MedicineDbRecord, MedicineEntity } from '../types';
 import { pool } from '../utils/db';
+import { ValidationError } from '../utils/errors';
 import { MedicineRecord } from './medicine.record';
-import { FieldPacket } from 'mysql2';
+import { FieldPacket, OkPacket, ResultSetHeader } from 'mysql2';
 import { nanoid } from 'nanoid';
 
 export class MedicineRepository {
   static async getOne(id: string): Promise<MedicineRecord | null> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `medicie` WHERE `id` = :id',
+      'SELECT * FROM `medicine` WHERE `id` = :id',
       { id },
-    )) as [MedicineRecord[], FieldPacket[]];
+    )) as [MedicineDbRecord[], FieldPacket[]];
 
-    return results.length === 0 ? null : new MedicineRecord(results[0]);
+    const obj = results[0];
+
+    return results.length === 0
+      ? null
+      : new MedicineRecord({
+          id: obj.id,
+          name: obj.name,
+          form: obj.form,
+          dosage: {
+            dailyDoses: obj.numberOfDailyDoses,
+            doseQuantity: obj.doseQuantity,
+            doseUnit: obj.doseUnit,
+          },
+          startDate: obj.startDate,
+          endDate: obj.endDate,
+          note: obj.name,
+        });
   }
 
   static async getAll(name: string): Promise<MedicineEntity[]> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `ads` WHERE `name` LIKE :search',
+      'SELECT * FROM `medicine` WHERE `name` LIKE :search',
       {
         search: `%${name}%`,
       },
-    )) as [MedicineRecord[], FieldPacket[]];
+    )) as [MedicineDbRecord[], FieldPacket[]];
 
-    return results.map(result => new MedicineRecord(result));
+    return results.map(
+      obj =>
+        new MedicineRecord({
+          id: obj.id,
+          name: obj.name,
+          form: obj.form,
+          dosage: {
+            dailyDoses: obj.numberOfDailyDoses,
+            doseQuantity: obj.doseQuantity,
+            doseUnit: obj.doseUnit,
+          },
+          startDate: obj.startDate,
+          endDate: obj.endDate,
+          note: obj.name,
+        }),
+    );
   }
 
   static async insertOne(obj: MedicineEntity) {
     if (!obj.id) obj.id = nanoid(10);
-    const [results] = (await pool.execute(
-      'INSERT INTO `medicine`(`id`, `name`, `form`, `numberOfDailyDoses`, `doseUnit`, `doseQuantity`, `StartDate`, `EndDate`, `note`) VALUES (:id, :name, :form, :numberOfDailyDoses, :doseUnit, :doseQuantity, :startDate, :endDate, :note)',
+
+    await pool.execute(
+      'INSERT INTO `medicine`(`id`, `name`, `form`, `numberOfDailyDoses`, `doseUnit`, `doseQuantity`, `startDate`, `endDate`, `note`) VALUES (:id, :name, :form, :numberOfDailyDoses, :doseUnit, :doseQuantity, :startDate, :endDate, :note)',
       {
         id: obj.id,
         name: obj.name,
@@ -40,9 +73,9 @@ export class MedicineRepository {
         endDate: obj.endDate ?? null,
         note: obj.note ?? null,
       },
-    )) as [MedicineEntity[], FieldPacket[]];
+    );
 
-    return results[0].id;
+    return obj.id;
   }
 
   static async updateOne(id: string, obj: Dosage) {

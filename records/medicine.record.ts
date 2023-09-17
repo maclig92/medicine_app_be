@@ -11,19 +11,17 @@ export class MedicineRecord implements MedicineEntity {
   public note?: string;
 
   constructor(obj: MedicineEntity) {
-    if (!obj.name || obj.name.length > 100 || obj.name === '') {
+    if (!obj.name || obj.name.length > 100 || obj.name === '')
       throw new ValidationError(
         'Medicine name cannot be empty or be longer than 100 charakters.',
       );
-    }
 
     if (!obj.form) throw new ValidationError('Medicine form cannot be empty.');
 
     if (
-      !obj.dosage ||
-      obj.dosage.dailyDoses === 0 ||
-      obj.dosage.doseQuantity === 0 ||
-      obj.dosage.doseUnit === ''
+      !obj.dosage.dailyDoses ||
+      !obj.dosage.doseQuantity ||
+      !obj.dosage.doseUnit
     )
       throw new ValidationError('Medicine dosage cannot be empty.');
 
