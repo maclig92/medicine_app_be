@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { MedicineRepository } from '../records/medicine.repository';
-import { MedicineEntity, SimpleMedicineEntity } from '../types';
-import { ValidationError } from '../utils/errors';
+import { SimpleMedicineEntity } from '../types';
 
 export const medicineRouter = Router();
 

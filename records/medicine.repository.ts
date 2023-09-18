@@ -2,13 +2,7 @@ import { Dosage, MedicineDbEntity, MedicineEntity } from '../types';
 import { pool } from '../utils/db';
 import { ValidationError } from '../utils/errors';
 import { MedicineRecord } from './medicine.record';
-import {
-  FieldPacket,
-  OkPacket,
-  ProcedureCallPacket,
-  ResultSetHeader,
-  RowDataPacket,
-} from 'mysql2';
+import { FieldPacket, ResultSetHeader } from 'mysql2';
 import { nanoid } from 'nanoid';
 
 export class MedicineRepository {
