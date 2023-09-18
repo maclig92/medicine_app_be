@@ -14,7 +14,7 @@ export interface MedicineEntity {
   note?: string;
 }
 
-export interface MedicineDbRecord {
+export interface MedicineDbEntity {
   id: string;
   name: string;
   form: string;

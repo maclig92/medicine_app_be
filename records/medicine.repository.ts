@@ -1,4 +1,4 @@
-import { Dosage, MedicineDbRecord, MedicineEntity } from '../types';
+import { Dosage, MedicineDbEntity, MedicineEntity } from '../types';
 import { pool } from '../utils/db';
 import { ValidationError } from '../utils/errors';
 import { MedicineRecord } from './medicine.record';
@@ -10,7 +10,7 @@ export class MedicineRepository {
     const [results] = (await pool.execute(
       'SELECT * FROM `medicine` WHERE `id` = :id',
       { id },
-    )) as [MedicineDbRecord[], FieldPacket[]];
+    )) as [MedicineDbEntity[], FieldPacket[]];
 
     const obj = results[0];
 
@@ -37,7 +37,7 @@ export class MedicineRepository {
       {
         search: `%${name}%`,
       },
-    )) as [MedicineDbRecord[], FieldPacket[]];
+    )) as [MedicineDbEntity[], FieldPacket[]];
 
     return results.map(
       obj =>
