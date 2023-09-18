@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { MedicineRepository } from '../records/medicine.repository';
 import { MedicineEntity, SimpleMedicineEntity } from '../types';
+import { ValidationError } from '../utils/errors';
 
 export const medicineRouter = Router();
 
@@ -30,4 +31,12 @@ medicineRouter
     const insertedId = await MedicineRepository.insertOne(insertedMed);
 
     res.json(insertedId);
+  })
+  .patch('/:id', async (req, res) => {
+    const updateInfo = await MedicineRepository.updateOne(
+      req.params.id,
+      req.body,
+    );
+
+    res.end('ok');
   });

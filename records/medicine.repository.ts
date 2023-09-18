@@ -1,8 +1,14 @@
-import { Dosage, MedicineDbRecord, MedicineEntity } from '../types';
+import { Dosage, MedicineDbEntity, MedicineEntity } from '../types';
 import { pool } from '../utils/db';
 import { ValidationError } from '../utils/errors';
 import { MedicineRecord } from './medicine.record';
-import { FieldPacket, OkPacket, ResultSetHeader } from 'mysql2';
+import {
+  FieldPacket,
+  OkPacket,
+  ProcedureCallPacket,
+  ResultSetHeader,
+  RowDataPacket,
+} from 'mysql2';
 import { nanoid } from 'nanoid';
 
 export class MedicineRepository {
@@ -10,7 +16,7 @@ export class MedicineRepository {
     const [results] = (await pool.execute(
       'SELECT * FROM `medicine` WHERE `id` = :id',
       { id },
-    )) as [MedicineDbRecord[], FieldPacket[]];
+    )) as [MedicineDbEntity[], FieldPacket[]];
 
     const obj = results[0];
 
@@ -37,7 +43,7 @@ export class MedicineRepository {
       {
         search: `%${name}%`,
       },
-    )) as [MedicineDbRecord[], FieldPacket[]];
+    )) as [MedicineDbEntity[], FieldPacket[]];
 
     return results.map(
       obj =>
@@ -79,15 +85,19 @@ export class MedicineRepository {
   }
 
   static async updateOne(id: string, obj: Dosage) {
-    await pool.execute(
+    const [{ warningStatus }] = await pool.execute<ResultSetHeader>(
       'UPDATE `medicine` SET  `numberOfDailyDoses` = :numberOfDailyDoses, `doseUnit` = :doseUnit, `doseQuantity` = :doseQuantity WHERE `id` = :id',
       {
         id,
         numberOfDailyDoses: obj.dailyDoses,
         doseUnit: obj.doseUnit,
-        doseQuantity: obj.doseUnit,
+        doseQuantity: obj.doseQuantity,
       },
     );
+
+    if (warningStatus !== 0) throw new ValidationError('Update failed.');
+
+    return warningStatus;
   }
 
   static async deleteOne(id: string) {
