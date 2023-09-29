@@ -27,7 +27,7 @@ export class MedicineRepository {
           },
           startDate: obj.startDate,
           endDate: obj.endDate,
-          note: obj.name,
+          note: obj.note,
         });
   }
 
@@ -78,14 +78,14 @@ export class MedicineRepository {
     return obj.id;
   }
 
-  static async updateOne(id: string, obj: Dosage) {
+  static async updateDosage(id: string, dosage: Dosage) {
     const [{ warningStatus }] = await pool.execute<ResultSetHeader>(
       'UPDATE `medicine` SET  `numberOfDailyDoses` = :numberOfDailyDoses, `doseUnit` = :doseUnit, `doseQuantity` = :doseQuantity WHERE `id` = :id',
       {
         id,
-        numberOfDailyDoses: obj.dailyDoses,
-        doseUnit: obj.doseUnit,
-        doseQuantity: obj.doseQuantity,
+        numberOfDailyDoses: dosage.dailyDoses,
+        doseUnit: dosage.doseUnit,
+        doseQuantity: dosage.doseQuantity,
       },
     );
 
