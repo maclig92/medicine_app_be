@@ -3,5 +3,5 @@ export interface PrescriptionEntity {
   issueDate: Date;
   isYearly?: boolean;
   isAntibiotic?: boolean;
-  exipireDate: Date;
+  expireDate?: Date;
 }
