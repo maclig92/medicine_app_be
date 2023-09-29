@@ -9,6 +9,9 @@ export class MedicineRecord implements MedicineEntity {
   public startDate?: Date;
   public endDate?: Date;
   public note?: string;
+  public prescriptionNumber?: number;
+
+  [key: string]: string | number | Dosage | Date;
 
   constructor(obj: MedicineEntity) {
     if (!obj.name || obj.name.length > 100 || obj.name === '')
@@ -28,12 +31,8 @@ export class MedicineRecord implements MedicineEntity {
     if (obj.note.length > 1000)
       throw new ValidationError('Note cannot be longer than 1000 charakters.');
 
-    this.id = obj.id;
-    this.name = obj.name;
-    this.form = obj.form;
-    this.dosage = obj.dosage;
-    this.startDate = obj.startDate;
-    this.endDate = obj.endDate;
-    this.note = obj.note;
+    for (const [key, val] of Object.entries(obj)) {
+      this[key] = val;
+    }
   }
 }
