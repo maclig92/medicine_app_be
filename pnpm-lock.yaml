@@ -21,7 +21,7 @@ dependencies:
     specifier: ^3.6.1
     version: 3.6.1
   nanoid:
-    specifier: '3'
+    specifier: 3.3.6
     version: 3.3.6
 
 devDependencies:

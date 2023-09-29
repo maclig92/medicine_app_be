@@ -14,10 +14,10 @@ export interface MedicineEntity {
   note?: string;
 }
 
-export type SimpleMedicineEntity = Omit<
-  MedicineEntity,
-  'form' | 'dosage' | 'startDate' | 'endDate' | 'note'
->;
+export interface SimpleMedicineEntity {
+  id: string;
+  name: string;
+}
 
 export interface MedicineDbEntity {
   id: string;
