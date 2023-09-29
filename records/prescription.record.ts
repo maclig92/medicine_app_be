@@ -1,16 +1,16 @@
 import { PrescriptionEntity } from '../types';
 import { ValidationError } from '../utils/errors';
 import { isFourDigitNumber } from '../utils/isFourDigitNumber';
-import { setExpireDate } from '../utils/setExpireDate';
+import { countExpireDate } from '../utils/countExpireDate';
 
 export class PrescriptionRecord implements PrescriptionEntity {
   public prescriptionNumber: number;
   public issueDate: Date;
   public isYearly?: boolean = false;
   public isAntibiotic?: boolean = false;
-  public exipireDate: Date;
+  public expireDate: Date;
 
-  [key: string]: number | boolean | Date;
+  [key: string]: number | boolean | Date | (() => void);
 
   constructor(obj: PrescriptionEntity) {
     const { prescriptionNumber, issueDate } = obj;
@@ -26,12 +26,16 @@ export class PrescriptionRecord implements PrescriptionEntity {
 
     for (const [key, val] of Object.entries(obj)) {
       this[key] = val;
-
-      this.exipireDate = this.isAntibiotic
-        ? setExpireDate(this.issueDate, 7)
-        : this.isYearly
-        ? setExpireDate(this.issueDate, 365)
-        : setExpireDate(this.issueDate, 30);
     }
+
+    this.setExpireDate();
+  }
+
+  setExpireDate(): void {
+    this.expireDate = this.isAntibiotic
+      ? countExpireDate(this.issueDate, 7)
+      : this.isYearly
+      ? countExpireDate(this.issueDate, 365)
+      : countExpireDate(this.issueDate, 30);
   }
 }
