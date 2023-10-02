@@ -9,7 +9,6 @@ export class MedicineRecord implements MedicineEntity {
   public startDate?: Date;
   public endDate?: Date;
   public note?: string;
-  public prescriptionNumber?: number;
 
   [key: string]: string | number | Dosage | Date;
 
