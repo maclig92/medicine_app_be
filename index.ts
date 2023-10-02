@@ -5,6 +5,7 @@ import { handleError } from './utils/errors';
 import { rateLimit } from 'express-rate-limit';
 import { config } from './config/config';
 import { medicineRouter } from './routers/medicine.router';
+import { prescriptionRouter } from './routers/prescription.router';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use('/medicine', medicineRouter);
+app.use('/prescription', prescriptionRouter);
 
 app.use(handleError);
 
