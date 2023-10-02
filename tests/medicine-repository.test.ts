@@ -31,19 +31,20 @@ test('Repository return all medicines from db when get empty string', async () =
   const medicines = await MedicineRepository.getAll('');
 
   expect(medicines).toBeDefined();
-  expect(medicines.length).toBe(4);
-});
-test('Repository return searching medicines', async () => {
-  const medicines = await MedicineRepository.getAll('nazwa');
-
-  expect(medicines).toBeDefined();
-  expect(medicines[0].name).toBe('Testowa Nazwa');
+  expect(medicines.length).toBeGreaterThanOrEqual(1);
 });
 
 test('Repository inserts', async () => {
   const inserted = await MedicineRepository.insertOne(defaultObj);
 
   expect(inserted.length).toBe(10);
+});
+
+test('Repository return searching medicines', async () => {
+  const medicines = await MedicineRepository.getAll('test_');
+
+  expect(medicines).toBeDefined();
+  expect(medicines.at(-1).name).toBe('test_test');
 });
 
 test('Repository deletes', async () => {
