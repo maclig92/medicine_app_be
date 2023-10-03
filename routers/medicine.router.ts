@@ -25,6 +25,8 @@ medicineRouter
       req.params.id,
     );
 
+    if (!meds) return res.json(['brak przypisanych leków']);
+
     return res.json(meds.map(med => med.medicineName));
   })
   .get('/:id', async (req, res) => {
