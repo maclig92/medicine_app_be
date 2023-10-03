@@ -75,7 +75,7 @@ export class PrescriptionRepository {
 
     const [{ affectedRows, warningStatus }] =
       await pool.execute<ResultSetHeader>(
-        'INSERT INTO `prescription_medicine` (`prescription_id`, `medicine_id`) VALUES (:prescriptionId, :medicineId)',
+        'INSERT INTO `medicine_prescription` (`prescriptionId`, `medicineId`) VALUES (:prescriptionId, :medicineId)',
         { prescriptionId, medicineId },
       );
 
