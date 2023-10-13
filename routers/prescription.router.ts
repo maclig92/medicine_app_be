@@ -29,10 +29,15 @@ prescriptionRouter
       isAntibiotic,
     });
 
-    return res.json(insertedId);
+    return res.status(201).json(insertedId);
   })
   .patch('/:id/:medicineId', async (req, res) => {
     const { id, medicineId } = req.params;
     await PrescriptionRepository.assignMedicineToPrescription(id, medicineId);
     res.json(req.params);
+  })
+  .delete('/:id', async (req, res) => {
+    await PrescriptionRepository.deleteOne(req.params.id);
+
+    res.status(204).end('deleted');
   });

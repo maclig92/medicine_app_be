@@ -39,7 +39,7 @@ medicineRouter
 
     const insertedId = await MedicineRepository.insertOne(insertedMed);
 
-    res.json(insertedId);
+    res.status(201).json(insertedId);
   })
   .patch('/:id', async (req, res) => {
     const updateInfo = await MedicineRepository.updateDosage(
@@ -48,4 +48,9 @@ medicineRouter
     );
 
     res.json(updateInfo);
+  })
+  .delete('/:id', async (req, res) => {
+    await MedicineRepository.deleteOne(req.params.id);
+
+    res.status(204).end('deleted');
   });
