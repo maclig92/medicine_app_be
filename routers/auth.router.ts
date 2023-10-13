@@ -29,7 +29,10 @@ authRouter
   .post('/verify', (req, res) => {
     const { token } = req.body;
 
-    const decoded: JwtPayload | string = jwt.verify(token, config.jwtSecretKey);
+    const decoded: JwtPayload | string = jwt.verify(
+      token,
+      process.env.JWT_SECRET,
+    );
 
     if (typeof decoded === 'string')
       return res.status(401).json({ message: 'Unauthorized' });

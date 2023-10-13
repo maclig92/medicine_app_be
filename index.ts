@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import 'dotenv/config';
 import 'express-async-errors';
 import { handleError } from './utils/errors';
 import { rateLimit } from 'express-rate-limit';
@@ -9,6 +10,8 @@ import { prescriptionRouter } from './routers/prescription.router';
 import { authRouter } from './routers/auth.router';
 import { verifyToken } from './utils/verifyToken';
 // import './utils/db';
+
+require('dotenv').config();
 
 const app = express();
 
@@ -28,6 +31,8 @@ app.use(
 app.use('/', authRouter);
 
 app.use(verifyToken);
+
+// TODO izolate data to various users
 
 app.use('/medicine', medicineRouter);
 app.use('/prescription', prescriptionRouter);
