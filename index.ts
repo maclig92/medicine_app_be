@@ -6,6 +6,9 @@ import { rateLimit } from 'express-rate-limit';
 import { config } from './config/config';
 import { medicineRouter } from './routers/medicine.router';
 import { prescriptionRouter } from './routers/prescription.router';
+import { authRouter } from './routers/auth.router';
+import { verifyToken } from './utils/verifyToken';
+// import './utils/db';
 
 const app = express();
 
@@ -21,6 +24,10 @@ app.use(
     max: 100, // Limit each IP to 100 requests per `window` (here, per 5 minutes)
   }),
 );
+
+app.use('/', authRouter);
+
+app.use(verifyToken);
 
 app.use('/medicine', medicineRouter);
 app.use('/prescription', prescriptionRouter);

@@ -7,6 +7,8 @@ export const config = {
     dbDatabase: 'database',
     corsOrigin: 'http://localhost:3000',
     serverPort: 3001,
+    jwtSecretKey: 'your-secret-key'
+
 };
 
  */
