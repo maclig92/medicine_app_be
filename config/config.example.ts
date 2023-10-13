@@ -1,4 +1,4 @@
-/**
+/** //delete commentary and change name to config.ts
 
 export const config = {
     dbHost: 'localhost',

@@ -2,10 +2,8 @@ import { nanoid } from 'nanoid';
 import { UserEntity } from '../types';
 import { pool } from '../utils/db';
 import { FieldPacket } from 'mysql2/promise';
-import { ValidationError } from '../utils/errors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { config } from '../config/config';
 
 export class UserRecord {
   id?: string;
