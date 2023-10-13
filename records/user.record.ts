@@ -72,7 +72,7 @@ export class UserRecord {
 
     if (!passwordMatch) return false;
 
-    const token = jwt.sign({ userId: user.id }, config.jwtSecretKey, {
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
