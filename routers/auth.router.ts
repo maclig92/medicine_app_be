@@ -23,4 +23,5 @@ authRouter
       .status(200)
       .cookie('access_token', token, { httpOnly: true })
       .json({ token });
-  });
+  })
+  .get('/verifyLogin', (req, res) => {});
