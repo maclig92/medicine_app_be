@@ -2,6 +2,8 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { UserEntity } from '../types';
 import { UserRecord } from '../records/user.record';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { config } from '../config/config';
 
 export const authRouter = Router();
 
@@ -24,4 +26,13 @@ authRouter
       .cookie('access_token', token, { httpOnly: true })
       .json({ token });
   })
-  .get('/verifyLogin', (req, res) => {});
+  .post('/verify', (req, res) => {
+    const { token } = req.body;
+
+    const decoded: JwtPayload | string = jwt.verify(token, config.jwtSecretKey);
+
+    if (typeof decoded === 'string')
+      return res.status(401).json({ message: 'Unauthorized' });
+
+    res.json(true);
+  });
