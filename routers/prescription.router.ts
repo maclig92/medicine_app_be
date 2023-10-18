@@ -1,43 +1,18 @@
 import { Router } from 'express';
-import { PrescriptionRepository } from '../records/prescription.repository';
-import { PrescriptionEntity } from '../types';
+import { PrescriptionController } from '../controllers/prescription.controller';
 
 export const prescriptionRouter = Router();
 
 prescriptionRouter
-  .get('/', async (req, res) => {
-    res.json(await PrescriptionRepository.getAll());
-  })
-  .get('/medicine/:id', async (req, res) => {
-    res.json(
-      await PrescriptionRepository.getPrescriptionAssignedToMedicine(
-        req.params.id,
-      ),
-    );
-  })
-  .get('/:id', async (req, res) => {
-    res.json(await PrescriptionRepository.getOne(req.params.id));
-  })
-  .post('/', async (req, res) => {
-    const { prescriptionNumber, issueDate, isYearly, isAntibiotic } =
-      req.body as PrescriptionEntity;
-
-    const insertedId = await PrescriptionRepository.insertOne({
-      prescriptionNumber: Number(prescriptionNumber),
-      issueDate: new Date(issueDate),
-      isYearly,
-      isAntibiotic,
-    });
-
-    return res.status(201).json(insertedId);
-  })
-  .patch('/:id/:medicineId', async (req, res) => {
-    const { id, medicineId } = req.params;
-    await PrescriptionRepository.assignMedicineToPrescription(id, medicineId);
-    res.json(req.params);
-  })
-  .delete('/:id', async (req, res) => {
-    await PrescriptionRepository.deleteOne(req.params.id);
-
-    res.status(204).end('deleted');
-  });
+  .get('/', PrescriptionController.getAll)
+  .post('/', PrescriptionController.insert)
+  .get(
+    '/medicine/:id',
+    PrescriptionController.getPrescriptionAssignedToMedicine,
+  )
+  .patch(
+    '/:id/:medicineId',
+    PrescriptionController.assignMedicineToPrescription,
+  )
+  .get('/:id', PrescriptionController.getOne)
+  .delete('/:id', PrescriptionController.deleteOne);
