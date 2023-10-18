@@ -13,5 +13,7 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "Node",
     "esModuleInterop": true
-  }
+  },
+  "include": ["**/*.ts"],
+  "files": ["./types/express/index.d.ts"]
 }
