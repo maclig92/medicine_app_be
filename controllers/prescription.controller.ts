@@ -4,31 +4,35 @@ import { PrescriptionEntity } from '../types';
 
 export class PrescriptionController {
   static async getAll(req: Request, res: Response) {
-    res.json(await PrescriptionRepository.getAll());
+    res.json(await PrescriptionRepository.getAll(req.userId));
   }
 
   static async getPrescriptionAssignedToMedicine(req: Request, res: Response) {
     res.json(
       await PrescriptionRepository.getPrescriptionAssignedToMedicine(
         req.params.id,
+        req.userId,
       ),
     );
   }
 
   static async getOne(req: Request, res: Response) {
-    res.json(await PrescriptionRepository.getOne(req.params.id));
+    res.json(await PrescriptionRepository.getOne(req.params.id, req.userId));
   }
 
   static async insert(req: Request, res: Response) {
     const { prescriptionNumber, issueDate, isYearly, isAntibiotic } =
       req.body as PrescriptionEntity;
 
-    const insertedId = await PrescriptionRepository.insertOne({
-      prescriptionNumber: Number(prescriptionNumber),
-      issueDate: new Date(issueDate),
-      isYearly,
-      isAntibiotic,
-    });
+    const insertedId = await PrescriptionRepository.insertOne(
+      {
+        prescriptionNumber: Number(prescriptionNumber),
+        issueDate: new Date(issueDate),
+        isYearly,
+        isAntibiotic,
+      },
+      req.userId,
+    );
 
     return res.status(201).json(insertedId);
   }

@@ -10,6 +10,7 @@ export class PrescriptionRecord implements PrescriptionEntity {
   public isYearly?: boolean = false;
   public isAntibiotic?: boolean = false;
   public expireDate: Date;
+  public ownerId?: string;
 
   [key: string]: string | number | boolean | Date | (() => void);
 

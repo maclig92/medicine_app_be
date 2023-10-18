@@ -12,6 +12,7 @@ export interface MedicineEntity {
   startDate?: Date;
   endDate?: Date;
   note?: string;
+  ownerId?: string;
 }
 
 export interface SimpleMedicineEntity {

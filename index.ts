@@ -9,7 +9,7 @@ import { medicineRouter } from './routers/medicine.router';
 import { prescriptionRouter } from './routers/prescription.router';
 import { authRouter } from './routers/auth.router';
 import { verifyToken } from './middlewares/verifyToken';
-// import './utils/db';
+import './utils/db';
 
 require('dotenv').config();
 
@@ -31,8 +31,6 @@ app.use(express.json());
 app.use('/', authRouter);
 
 app.use(verifyToken);
-
-// TODO izolate data to various users
 
 app.use('/medicine', medicineRouter);
 app.use('/prescription', prescriptionRouter);

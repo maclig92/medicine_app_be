@@ -10,25 +10,28 @@ import { nanoid } from 'nanoid';
 import { ValidationError } from '../utils/errors';
 
 export class PrescriptionRepository {
-  static async getAll(): Promise<PrescriptionEntity[]> {
-    const [results] = (await pool.execute('SELECT * FROM `prescription`')) as [
-      PrescriptionEntity[],
-      FieldPacket[],
-    ];
+  static async getAll(userId: string): Promise<PrescriptionEntity[]> {
+    const [results] = (await pool.execute(
+      'SELECT * FROM `prescription` WHERE `ownerId` = :userId',
+      { userId },
+    )) as [PrescriptionEntity[], FieldPacket[]];
 
     return results.map(item => new PrescriptionRecord(item));
   }
 
-  static async getOne(id: string): Promise<PrescriptionEntity | null> {
+  static async getOne(
+    id: string,
+    userId: string,
+  ): Promise<PrescriptionEntity | null> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `prescription` WHERE `id` = :id',
-      { id },
+      'SELECT * FROM `prescription` WHERE `id` = :id AND `ownerId` = :userId',
+      { id, userId },
     )) as [PrescriptionEntity[], FieldPacket[]];
 
     return results.length === 0 ? null : new PrescriptionRecord(results[0]);
   }
 
-  static async insertOne(obj: PrescriptionEntity) {
+  static async insertOne(obj: PrescriptionEntity, userId: string) {
     if (!obj.id) obj.id = nanoid(10);
 
     const inserted = new PrescriptionRecord(obj);
@@ -36,13 +39,14 @@ export class PrescriptionRepository {
     console.log(inserted);
 
     await pool.execute(
-      'INSERT INTO `prescription`(`id`, `prescriptionNumber`, `issueDate`, `isYearly`, `isAntibiotic`) VALUES (:id, :prescriptionNumber, :issueDate,  :isYearly, :isAntibiotic)',
+      'INSERT INTO `prescription`(`id`, `prescriptionNumber`, `issueDate`, `isYearly`, `isAntibiotic`, `ownerId`) VALUES (:id, :prescriptionNumber, :issueDate,  :isYearly, :isAntibiotic, :userId)',
       {
         id: inserted.id,
         prescriptionNumber: inserted.prescriptionNumber,
         issueDate: inserted.issueDate,
         isYearly: inserted.isYearly,
         isAntibiotic: inserted.isAntibiotic,
+        userId,
       },
     );
 
@@ -87,10 +91,11 @@ export class PrescriptionRepository {
 
   static async getPrescriptionAssignedToMedicine(
     medicineId: string,
+    userId: string,
   ): Promise<PrescriptionMedicine[] | null> {
     const [results] = (await pool.execute(
-      'SELECT `prescription`.`prescriptionNumber`, `prescription`.`id`, `medicine`.`name` AS `medicineName` FROM `prescription` JOIN `medicine_prescription` ON `prescription`.`id` = `medicine_prescription`.`prescriptionId` JOIN `medicine` ON `medicine_prescription`.`medicineId` = `medicine`.`id` WHERE `medicine`.`id` = :medicineId',
-      { medicineId },
+      'SELECT `prescription`.`prescriptionNumber`, `prescription`.`id`, `medicine`.`name` AS `medicineName` FROM `prescription` JOIN `medicine_prescription` ON `prescription`.`id` = `medicine_prescription`.`prescriptionId` JOIN `medicine` ON `medicine_prescription`.`medicineId` = `medicine`.`id` WHERE `medicine`.`id` = :medicineId AND `prescription`.`ownerId` = :userId',
+      { medicineId, userId },
     )) as [PrescriptionMedicine[], FieldPacket[]];
 
     if (results.length === 0) return null;

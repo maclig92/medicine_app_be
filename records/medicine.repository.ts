@@ -6,10 +6,13 @@ import { FieldPacket, ResultSetHeader } from 'mysql2';
 import { nanoid } from 'nanoid';
 
 export class MedicineRepository {
-  static async getOne(id: string): Promise<MedicineRecord | null> {
+  static async getOne(
+    id: string,
+    userId: string,
+  ): Promise<MedicineRecord | null> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `medicine` WHERE `id` = :id',
-      { id },
+      'SELECT * FROM `medicine` WHERE `id` = :id AND `ownerId` = :userId',
+      { id, userId },
     )) as [MedicineDbEntity[], FieldPacket[]];
 
     const obj = results[0];
@@ -31,11 +34,12 @@ export class MedicineRepository {
         });
   }
 
-  static async getAll(name: string): Promise<MedicineEntity[]> {
+  static async getAll(name: string, userId: string): Promise<MedicineEntity[]> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `medicine` WHERE `name` LIKE :search',
+      'SELECT * FROM `medicine` WHERE `name` LIKE :search AND `ownerId` = :userId',
       {
         search: `%${name}%`,
+        userId,
       },
     )) as [MedicineDbEntity[], FieldPacket[]];
 
@@ -57,11 +61,11 @@ export class MedicineRepository {
     );
   }
 
-  static async insertOne(obj: MedicineEntity) {
+  static async insertOne(obj: MedicineEntity, userId: string) {
     if (!obj.id) obj.id = nanoid(10);
 
     await pool.execute(
-      'INSERT INTO `medicine`(`id`, `name`, `form`, `numberOfDailyDoses`, `doseUnit`, `doseQuantity`, `startDate`, `endDate`, `note`) VALUES (:id, :name, :form, :numberOfDailyDoses, :doseUnit, :doseQuantity, :startDate, :endDate, :note)',
+      'INSERT INTO `medicine`(`id`, `name`, `form`, `numberOfDailyDoses`, `doseUnit`, `doseQuantity`, `startDate`, `endDate`, `note`, `ownerId`) VALUES (:id, :name, :form, :numberOfDailyDoses, :doseUnit, :doseQuantity, :startDate, :endDate, :note, :userId)',
       {
         id: obj.id,
         name: obj.name,
@@ -72,6 +76,7 @@ export class MedicineRepository {
         startDate: obj.startDate ?? null,
         endDate: obj.endDate ?? null,
         note: obj.note ?? null,
+        userId,
       },
     );
 

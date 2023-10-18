@@ -5,6 +5,7 @@ export interface PrescriptionEntity {
   isYearly?: boolean;
   isAntibiotic?: boolean;
   expireDate?: Date;
+  ownerId?: string;
 }
 
 export interface PrescriptionMedicine {
