@@ -1,14 +1,16 @@
 import { nanoid } from 'nanoid';
-import { UserEntity } from '../types';
+import { EncryptedPESEL, UserEntity } from '../types';
 import { pool } from '../utils/db';
 import { FieldPacket } from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { decryptPESEL } from '../utils/decryptPESEL';
 
 export class UserRecord {
   id?: string;
   username: string;
   email: string;
+  PESELnumber: string;
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -24,6 +26,7 @@ export class UserRecord {
     this.id = user.id;
     this.username = user.username;
     this.email = user.email;
+    this.PESELnumber = user.PESELnumber;
     this.password = user.password;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
@@ -48,8 +51,10 @@ export class UserRecord {
 
     if (isExisted.length !== 0) return { message: 'User already exists!' };
 
+    console.log('this:', this);
+
     await pool.execute(
-      'INSERT INTO `user` (id, username, password, email) VALUES (:id, :username, :password, :email)',
+      'INSERT INTO `user` (id, username, password, email, PESELnumber) VALUES (:id, :username, :password, :email, :PESELnumber)',
       this,
     );
     return this;
@@ -75,5 +80,17 @@ export class UserRecord {
     });
 
     return token;
+  }
+
+  async getPesel() {
+    const encryptedPESEL: EncryptedPESEL = JSON.parse(
+      this.PESELnumber as string,
+    );
+
+    return await decryptPESEL(
+      this.password,
+      encryptedPESEL.encrypted,
+      encryptedPESEL.ivHex,
+    );
   }
 }
