@@ -5,7 +5,7 @@ import { countExpireDate } from '../utils/countExpireDate';
 
 export class PrescriptionRecord implements PrescriptionEntity {
   public id?: string;
-  public prescriptionNumber: number;
+  public prescriptionNumber: string;
   public issueDate: Date;
   public isYearly?: boolean = false;
   public isAntibiotic?: boolean = false;
@@ -20,7 +20,7 @@ export class PrescriptionRecord implements PrescriptionEntity {
     if (!prescriptionNumber)
       throw new ValidationError('Recepta musi mieć numer');
 
-    if (!isFourDigitNumber(prescriptionNumber))
+    if (prescriptionNumber.length !== 4)
       throw new ValidationError('Recepta musi być liczbą czterocyfrową');
 
     if (!issueDate)

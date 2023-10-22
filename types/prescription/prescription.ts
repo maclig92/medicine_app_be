@@ -1,6 +1,6 @@
 export interface PrescriptionEntity {
   id?: string;
-  prescriptionNumber: number;
+  prescriptionNumber: string;
   issueDate: Date;
   isYearly?: boolean;
   isAntibiotic?: boolean;

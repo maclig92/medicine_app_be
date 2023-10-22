@@ -28,7 +28,7 @@ export class PrescriptionController {
 
     const insertedId = await PrescriptionRepository.insertOne(
       {
-        prescriptionNumber: Number(prescriptionNumber),
+        prescriptionNumber,
         issueDate: new Date(issueDate),
         isYearly,
         isAntibiotic,
