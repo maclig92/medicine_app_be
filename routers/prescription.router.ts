@@ -6,6 +6,7 @@ export const prescriptionRouter = Router();
 prescriptionRouter
   .get('/', PrescriptionController.getAll)
   .post('/', PrescriptionController.insert)
+  .get('/qr/:id', PrescriptionController.getQrCode)
   .get(
     '/medicine/:id',
     PrescriptionController.getPrescriptionAssignedToMedicine,
