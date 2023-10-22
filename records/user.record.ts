@@ -83,9 +83,7 @@ export class UserRecord {
   }
 
   async getPesel() {
-    const encryptedPESEL: EncryptedPESEL = JSON.parse(
-      this.PESELnumber as string,
-    );
+    const encryptedPESEL: EncryptedPESEL = JSON.parse(this.PESELnumber);
 
     return await decryptPESEL(
       this.password,
