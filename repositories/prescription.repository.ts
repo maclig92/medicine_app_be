@@ -40,10 +40,9 @@ export class PrescriptionRepository {
     )) as [PrescriptionEntity[], FieldPacket[]];
 
     if (isExisted.length !== 0)
-      throw new ValidationError('Prescription already exists!');
+      throw new ValidationError('Ten numer recepty już istnieje!');
 
     if (!obj.id) obj.id = nanoid(10);
-
     const inserted = new PrescriptionRecord(obj);
 
     await pool.execute(

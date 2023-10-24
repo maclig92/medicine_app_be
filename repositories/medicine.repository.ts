@@ -94,7 +94,7 @@ export class MedicineRepository {
       },
     );
 
-    if (warningStatus !== 0) throw new ValidationError('Update failed.');
+    if (warningStatus !== 0) throw new Error('Edycja nie powiodła się.');
 
     return warningStatus;
   }
