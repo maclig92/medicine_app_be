@@ -12,7 +12,7 @@ import { ValidationError } from '../utils/errors';
 export class PrescriptionRepository {
   static async getAll(userId: string): Promise<PrescriptionEntity[]> {
     const [results] = (await pool.execute(
-      'SELECT * FROM `prescription` WHERE `ownerId` = :userId',
+      'SELECT * FROM `prescription` WHERE `ownerId` = :userId ORDER BY `prescriptionNumber`',
       { userId },
     )) as [PrescriptionEntity[], FieldPacket[]];
 
