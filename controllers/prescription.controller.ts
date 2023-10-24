@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrescriptionRepository } from '../records/prescription.repository';
+import { PrescriptionRepository } from '../repositories/prescription.repository';
 import { PrescriptionEntity } from '../types';
 import { generateQrCode } from '../utils/generateQRCode';
 import { UserRecord } from '../records/user.record';

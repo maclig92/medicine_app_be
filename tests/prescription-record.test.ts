@@ -2,7 +2,7 @@ import { PrescriptionRecord } from '../records/prescription.record';
 import { PrescriptionEntity } from '../types';
 
 const exampleObj: PrescriptionEntity = {
-  prescriptionNumber: 1234,
+  prescriptionNumber: '1234',
   issueDate: new Date('2023-01-01'),
   isYearly: false,
   isAntibiotic: false,
@@ -35,14 +35,14 @@ test('Record throws when invalid prescriptionNumber', () => {
   expect(() => {
     new PrescriptionRecord({
       ...exampleObj,
-      prescriptionNumber: 123,
+      prescriptionNumber: '123',
     });
   }).toThrow();
 
   expect(() => {
     new PrescriptionRecord({
       ...exampleObj,
-      prescriptionNumber: 12345,
+      prescriptionNumber: '12345',
     });
   }).toThrow();
 });

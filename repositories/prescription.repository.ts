@@ -5,7 +5,7 @@ import {
   PrescriptionMedicine,
 } from '../types';
 import { pool } from '../utils/db';
-import { PrescriptionRecord } from './prescription.record';
+import { PrescriptionRecord } from '../records/prescription.record';
 import { nanoid } from 'nanoid';
 import { ValidationError } from '../utils/errors';
 

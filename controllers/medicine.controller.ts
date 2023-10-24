@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { MedicineRepository } from '../records/medicine.repository';
+import { MedicineRepository } from '../repositories/medicine.repository';
 import { MedicineEntity, SimpleMedicineEntity } from '../types';
-import { PrescriptionRepository } from '../records/prescription.repository';
+import { PrescriptionRepository } from '../repositories/prescription.repository';
 
 export class MedicineController {
   static async getAll(req: Request, res: Response) {
