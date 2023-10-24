@@ -32,6 +32,16 @@ export class PrescriptionRepository {
   }
 
   static async insertOne(obj: PrescriptionEntity, userId: string) {
+    const [isExisted] = (await pool.execute(
+      'SELECT * FROM `prescription` WHERE `prescriptionNumber` = :prescriptionNumber',
+      {
+        prescriptionNumber: obj.prescriptionNumber,
+      },
+    )) as [PrescriptionEntity[], FieldPacket[]];
+
+    if (isExisted.length !== 0)
+      throw new ValidationError('Prescription already exists!');
+
     if (!obj.id) obj.id = nanoid(10);
 
     const inserted = new PrescriptionRecord(obj);
