@@ -7,8 +7,6 @@ export class MedicineController {
   static async getAll(req: Request, res: Response) {
     const meds = await MedicineRepository.getAll('', req.userId);
 
-    console.log(req.userId);
-
     res.json(
       meds.map(med => ({ id: med.id, name: med.name } as SimpleMedicineEntity)),
     );

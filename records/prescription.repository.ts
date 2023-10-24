@@ -36,8 +36,6 @@ export class PrescriptionRepository {
 
     const inserted = new PrescriptionRecord(obj);
 
-    console.log(inserted);
-
     await pool.execute(
       'INSERT INTO `prescription`(`id`, `prescriptionNumber`, `issueDate`, `isYearly`, `isAntibiotic`, `ownerId`) VALUES (:id, :prescriptionNumber, :issueDate,  :isYearly, :isAntibiotic, :userId)',
       {

@@ -51,8 +51,6 @@ export class UserRecord {
 
     if (isExisted.length !== 0) return { message: 'User already exists!' };
 
-    console.log('this:', this);
-
     await pool.execute(
       'INSERT INTO `user` (id, username, password, email, PESELnumber) VALUES (:id, :username, :password, :email, :PESELnumber)',
       this,
@@ -70,7 +68,6 @@ export class UserRecord {
 
     const user = results[0];
 
-    // console.log(user);
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) return false;

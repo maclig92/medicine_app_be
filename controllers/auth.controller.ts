@@ -8,7 +8,6 @@ import { decryptPESEL } from '../utils/decryptPESEL';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
-    console.log(req.body);
     const { username, password, email, PESELnumber } = req.body as UserEntity;
     const hashedPwd = await bcrypt.hash(password, 10);
     const encryptedPESEL = JSON.stringify(
