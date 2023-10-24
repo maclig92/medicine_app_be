@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "typeRoots": ["@types/express", "./types/express"],
     "noImplicitAny": true,
     "preserveConstEnums": true,
     "sourceMap": true,
