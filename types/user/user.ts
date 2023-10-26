@@ -7,7 +7,7 @@ export interface UserEntity {
   id?: string;
   username: string;
   email: string;
-  PESELnumber: string;
+  peselNumber: string;
   password: string;
   createdAt?: Date;
   updatedAt?: Date;

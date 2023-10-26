@@ -8,16 +8,16 @@ import { decryptPESEL } from '../utils/decryptPESEL';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
-    const { username, password, email, PESELnumber } = req.body as UserEntity;
+    const { username, password, email, peselNumber } = req.body as UserEntity;
     const hashedPwd = await bcrypt.hash(password, 10);
     const encryptedPESEL = JSON.stringify(
-      await encryptPESEL(PESELnumber, hashedPwd),
+      await encryptPESEL(peselNumber, hashedPwd),
     );
     const user = new UserRecord({
       username,
       password: hashedPwd,
       email,
-      PESELnumber: encryptedPESEL,
+      peselNumber: encryptedPESEL,
     });
     res.json(await user.register());
   }
@@ -51,8 +51,8 @@ export class AuthController {
   static async getUserPesel(req: Request, res: Response) {
     const user = new UserRecord(await UserRecord.getOne(req.params.id));
 
-    const PESELnumber = await user.getPesel();
+    const peselNumber = await user.getPesel();
 
-    res.status(200).json(PESELnumber);
+    res.status(200).json(peselNumber);
   }
 }
