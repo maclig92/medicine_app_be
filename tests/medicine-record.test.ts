@@ -1,7 +1,7 @@
 import { MedicineRecord } from '../records/medicine.record';
 import { MedicineEntity } from '../types';
 import { nanoid } from 'nanoid';
-import { longNote } from '../utils/longNote';
+import { longString } from '../utils/longString';
 
 const defaultObj: MedicineEntity = {
   id: nanoid(10),
@@ -50,6 +50,6 @@ test('Record throws when empty dosage', () => {
 
 test('Record throws when note have more than 1000 char.', () => {
   expect(() => {
-    const testObj = new MedicineRecord({ ...defaultObj, note: longNote });
+    const testObj = new MedicineRecord({ ...defaultObj, note: longString });
   }).toThrow();
 });

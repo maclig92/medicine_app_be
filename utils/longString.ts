@@ -1,4 +1,4 @@
-export const longNote = `
+export const longString = `
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate gravida nisi, ac mattis risus sodales in. Nulla vitae nisl urna. Morbi bibendum ut diam eu porta. Praesent varius vulputate sem, sed maximus quam tempor ut. Aliquam varius malesuada gravida. Nullam cursus magna neque. Etiam viverra iaculis dolor eget efficitur.
 
