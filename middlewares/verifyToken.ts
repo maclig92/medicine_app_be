@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-// export interface TokenRequest extends Request {
-//   userId?: string;
-// }
-
 export const verifyToken = async (
   req: Request,
   res: Response,

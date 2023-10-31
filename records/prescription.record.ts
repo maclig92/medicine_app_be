@@ -1,6 +1,5 @@
 import { PrescriptionEntity } from '../types';
 import { ValidationError } from '../utils/errors';
-import { isFourDigitNumber } from '../utils/isFourDigitNumber';
 import { countExpireDate } from '../utils/countExpireDate';
 
 export class PrescriptionRecord implements PrescriptionEntity {

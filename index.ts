@@ -28,12 +28,12 @@ app.use(express.json());
 //  }),
 //);
 
-app.use('/', authRouter);
+app.use('/api', authRouter);
 
 app.use(verifyToken);
 
-app.use('/medicine', medicineRouter);
-app.use('/prescription', prescriptionRouter);
+app.use('/api/medicine', medicineRouter);
+app.use('/api/prescription', prescriptionRouter);
 
 app.use(handleError);
 

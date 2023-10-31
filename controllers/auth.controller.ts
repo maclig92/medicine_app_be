@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import { UserRecord } from '../records/user.record';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { EncryptedPESEL, UserEntity } from '../types';
+import { UserEntity } from '../types';
 import bcrypt from 'bcrypt';
 import { encryptPESEL } from '../utils/encryptPESEL';
-import { decryptPESEL } from '../utils/decryptPESEL';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
